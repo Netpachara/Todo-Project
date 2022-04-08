@@ -1,4 +1,5 @@
-CREATE TABLE [user].dbo.[User] (
+use [user]
+CREATE TABLE [User] (
     UserID int PRIMARY KEY Identity,
     FullName NVARCHAR(100) NOT NULL,
     Email NVARCHAR(100) NOT NULL,
