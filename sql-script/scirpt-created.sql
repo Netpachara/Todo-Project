@@ -18,3 +18,6 @@ CREATE TABLE UserRole (
 	CONSTRAINT user_foreign_key FOREIGN KEY(UserID) REFERENCES [User](UserID),
 	CONSTRAINT role_foreign_key FOREIGN KEY(RoleID) REFERENCES Role(RoleID)
 );
+
+INSERT INTO [Role](Title) VALUES('admin')
+INSERT INTO [Role](Title) VALUES('member')
