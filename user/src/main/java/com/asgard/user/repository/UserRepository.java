@@ -12,12 +12,15 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    @Query("FROM User u " + "WHERE u.email = :email")
-    boolean findDuplicateEmail(@Param("email") String email);
+//    @Query("SELECT COUNT(*) FROM User u " + "WHERE u.email = :email")
+//    boolean findDuplicateEmail(@Param("email") String email);
 
     User findByEmail(String email);
 
-    User findByfullName(String fullName);
+//    @Query("FROM User u " + "WHERE STR(u.userID) LIKE %:search% OR LOWER(u.fullName) LIKE %:search% OR LOWER(u.email) LIKE %:search%")
+//    User findUserList(@Param("email") String search);
 
+    @Query("FROM User u " + "WHERE u.email = :email AND u.password = :password")
+    User checkLogin(@Param("email") String email, @Param("password") String password);
 
 }

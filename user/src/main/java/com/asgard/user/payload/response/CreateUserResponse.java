@@ -7,6 +7,6 @@ public class CreateUserResponse {
 
     private Integer userID;
 
-    private String fullName;
+//    private String fullName;
 
 }

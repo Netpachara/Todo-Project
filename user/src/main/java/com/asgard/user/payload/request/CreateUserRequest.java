@@ -11,19 +11,18 @@ public class CreateUserRequest {
     @NotNull(message = "fullName is required")
     @NotBlank(message = "fullName is required")
     @NotEmpty(message = "fullName is required")
-    @Size(min = 1, message = "fullName must greater than 1 character")
+    @Size(min = 1, message = "fullName must greater than 1 characters")
     private String fullName;
 
-    @NotNull
-    @NotBlank
-    @NotEmpty
-
+    @NotNull(message = "email is required")
+    @NotBlank(message = "email is required")
+    @NotEmpty(message = "email is required")
     private String email;
 
-    @NotNull
-    @NotBlank
-    @NotEmpty
-    @Size(min = 8)
+    @NotNull(message = "password is required")
+    @NotBlank(message = "password is required")
+    @NotEmpty(message = "password is required")
+    @Size(min = 8, message = "password must greater than 8 characters")
     private String password;
 
 }

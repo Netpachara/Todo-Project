@@ -24,7 +24,21 @@ public class UserService {
         if(userRepository.findByEmail(email) != null){
             return true;
         }
+        if(userRepository.findByEmail(email) != null){
+            return true;
+        }
         return false;
+    }
+
+    public User Login(String email, String password){
+        return userRepository.checkLogin(email, password);
+    }
+
+    public void findUserList(String search){
+//        return userRepository.findUserList(search);
+    }
+
+    public void findUserDetails(){
 
     }
 
@@ -35,6 +49,10 @@ public class UserService {
         user.setPassword(userDetails.getPassword());
         user = userRepository.save(user);
         return user;
+    }
+
+    public void deleteUser(Integer id){
+        userRepository.deleteById(id);
     }
 
 }
