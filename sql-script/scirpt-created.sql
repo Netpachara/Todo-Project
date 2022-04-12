@@ -11,7 +11,7 @@ CREATE TABLE Role (
 	Title NVARCHAR(50) NOT NULL
 );
 
-CREATE TABLE UserRole (
+CREATE TABLE User_Role (
 	UserID int,
 	RoleID int,
 	CONSTRAINT comp_key PRIMARY KEY(UserID,RoleID),

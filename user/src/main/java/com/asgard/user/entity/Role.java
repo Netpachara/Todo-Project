@@ -2,15 +2,17 @@ package com.asgard.user.entity;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
-@Table(name = "user")
+@Table(name  = "[Role]")
 public class Role {
+
+    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
+    private List<User_Role> user_role;
+
 
     @Id
     @Column(name = "roleid")
@@ -18,4 +20,5 @@ public class Role {
 
     @Column(name = "title")
     private String title;
+
 }
