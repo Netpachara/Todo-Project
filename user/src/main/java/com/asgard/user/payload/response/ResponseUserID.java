@@ -3,10 +3,9 @@ package com.asgard.user.payload.response;
 import lombok.Data;
 
 @Data
-public class CreateUserResponse {
+public class ResponseUserID {
 
     private Integer userID;
 
-//    private String fullName;
 
 }

@@ -11,7 +11,7 @@ public class CreateUserRequest {
     @NotNull(message = "fullName is required")
     @NotBlank(message = "fullName is required")
     @NotEmpty(message = "fullName is required")
-    @Size(min = 1, message = "fullName must greater than 1 characters")
+    @Size(min = 1, message = "fullName must be greater than 1 characters")
     private String fullName;
 
     @NotNull(message = "email is required")
@@ -22,7 +22,7 @@ public class CreateUserRequest {
     @NotNull(message = "password is required")
     @NotBlank(message = "password is required")
     @NotEmpty(message = "password is required")
-    @Size(min = 8, message = "password must greater than 8 characters")
+    @Size(min = 8, message = "password must be greater than 8 characters")
     private String password;
 
 }

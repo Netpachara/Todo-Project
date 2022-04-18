@@ -1,0 +1,21 @@
+version: '3'
+services:
+  testSql:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: Admin1234
+      MSSQL_PID: Developer
+    volumes:
+      - ./mssql/data/:/var/opt/mssql/data
+  user_services:
+    build: ./
+    ports:
+      - "8080:8080"
+    depends_on:
+      - testSql
+    environment:
+      DB_HOST: testSql
+      

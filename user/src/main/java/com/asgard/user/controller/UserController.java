@@ -5,9 +5,10 @@ import com.asgard.user.payload.request.CreateEditRequest;
 import com.asgard.user.payload.request.CreateLoginRequest;
 import com.asgard.user.payload.request.CreateUserRequest;
 import com.asgard.user.payload.request.CreateUserRequestID;
-import com.asgard.user.payload.response.CreateUserResponse;
+import com.asgard.user.payload.response.ResponseUserID;
 import com.asgard.user.payload.response.ResponseBase;
 import com.asgard.user.payload.response.ResponseUserDetailsAndRole;
+import com.asgard.user.payload.response.ResponseUserList;
 import com.asgard.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -36,9 +37,9 @@ public class UserController {
         try{
             validateData(userReq);
             User user = userService.createdUser(userReq);
-            CreateUserResponse createUserResponse = new CreateUserResponse();
-            createUserResponse.setUserID(user.getUserID());
-            responseBase.setData(createUserResponse);
+            ResponseUserID responseUserID = new ResponseUserID();
+            responseUserID.setUserID(user.getUserID());
+            responseBase.setData(responseUserID);
             response = new ResponseEntity<>(responseBase, HttpStatus.OK);
         }
         catch (Exception e){
@@ -49,21 +50,21 @@ public class UserController {
         return response;
     }
 
-    @GetMapping("/user")
+    @GetMapping("/user/login")
     public ResponseEntity userLogin(@Valid @RequestBody CreateLoginRequest userLogin){
         User user = userService.Login(userLogin.getEmail(), userLogin.getPassword());
-        CreateUserResponse createUserResponse = new CreateUserResponse();
-        createUserResponse.setUserID(user.getUserID());
-        ResponseEntity response = new ResponseEntity(createUserResponse,HttpStatus.OK);
+        ResponseUserID responseUserID = new ResponseUserID();
+        responseUserID.setUserID(user.getUserID());
+        ResponseEntity response = new ResponseEntity(responseUserID,HttpStatus.OK);
         return response;
     }
 
     @GetMapping("/user/list")
     public ResponseEntity getUserList(@Valid @Param("search") String search,@Valid @Param("roleID") Integer roleID){
         List<User> user_role = userService.findUserList(search, roleID);
-        List<ResponseUserDetailsAndRole> res = new ArrayList<>();
+        List<ResponseUserList> res = new ArrayList<>();
         for(User u : user_role){
-            ResponseUserDetailsAndRole response = new ResponseUserDetailsAndRole() ;
+            ResponseUserList response = new ResponseUserList() ;
             response.setUserID(u.getUserID());
             response.setFullName(u.getFullName());
             response.setEmail(u.getEmail());
@@ -83,10 +84,21 @@ public class UserController {
     }
 
 
-    @PutMapping("/user")
-    public void editUser(@Valid @RequestBody CreateEditRequest editRequest){
-        userService.editUserRole(editRequest);
-
+    @PutMapping("/user/edit")
+    public ResponseEntity editUser(@Valid @RequestBody CreateEditRequest editRequest){
+        ResponseEntity response = null;
+        try{
+            Integer userID = userService.editUserRole(editRequest);
+            ResponseUserID responseUserID = new ResponseUserID();
+            responseUserID.setUserID(userID);
+            response = new ResponseEntity(responseUserID,HttpStatus.OK);
+        }
+        catch (Exception e){
+            if( e.getMessage().equalsIgnoreCase("Duplicated Email")){
+                response = new ResponseEntity(e.getMessage(),HttpStatus.OK);
+            }
+        }
+        return response;
     }
 
 

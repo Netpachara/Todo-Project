@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 import com.asgard.user.entity.embeddedid.UserRoleId;
+import org.hibernate.annotations.Immutable;
 
 @Data
 @Entity
@@ -20,6 +21,14 @@ public class User_Role {
     @JoinColumn(name="userID", insertable = false, updatable = false)
     private User user;
 
+    public User_Role(){
+
+    }
+
+    public User_Role(UserRoleId userRoleId) {
+        this.userRoleId = userRoleId;
+    }
+
     @Override
     public String toString() {
         return "User_Role{" +
@@ -30,6 +39,8 @@ public class User_Role {
     @ManyToOne()
     @JoinColumn(name="roleID", insertable = false, updatable = false)
     private Role role;
+
+
 
 //    @Id
 //    @Column(name = "userid")
