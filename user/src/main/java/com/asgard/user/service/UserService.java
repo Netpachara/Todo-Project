@@ -105,10 +105,11 @@ public class UserService {
 
     @Transactional
     public Integer editUserRole(CreateEditRequest editRequest) throws Exception {
-        User user = userRepository.findByUserID(editRequest.getUserID());
-        if(userRepository.findByEmail(editRequest.getEmail()) != null){
+        if(userRepository.findByEmailANDUserID(editRequest.getEmail(), editRequest.getUserID()) != null){
             throw new Exception("Duplicated email");
         }
+
+        User user = userRepository.findByUserID(editRequest.getUserID());
         user.setFullName(editRequest.getFullName());
         user.setEmail(editRequest.getEmail());
         userRepository.save(user);

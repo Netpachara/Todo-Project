@@ -1,8 +1,5 @@
 package com.asgard.user.entity;
 
-
-import com.asgard.user.entity.embeddedid.UserRoleId;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -13,7 +10,7 @@ import java.util.List;
 @Table(name  = "[User]")
 public class User {
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<User_Role> user_role;
 
 
