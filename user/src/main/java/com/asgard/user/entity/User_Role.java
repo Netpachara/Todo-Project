@@ -1,12 +1,14 @@
 package com.asgard.user.entity;
 
 
+import com.asgard.user.entity.embeddedid.UserRoleId;
 import lombok.Data;
 
-import javax.persistence.*;
-
-import com.asgard.user.entity.embeddedid.UserRoleId;
-import org.hibernate.annotations.Immutable;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Data
 @Entity

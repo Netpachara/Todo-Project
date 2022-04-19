@@ -1,10 +1,7 @@
 package com.asgard.user.repository;
 
 
-import com.asgard.user.entity.Role;
 import com.asgard.user.entity.User;
-import com.asgard.user.entity.User_Role;
-import com.asgard.user.payload.response.ResponseUserDetailsAndRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

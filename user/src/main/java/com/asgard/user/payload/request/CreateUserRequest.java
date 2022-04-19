@@ -2,8 +2,10 @@ package com.asgard.user.payload.request;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 public class CreateUserRequest {

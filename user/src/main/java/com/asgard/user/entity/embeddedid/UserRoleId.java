@@ -3,7 +3,6 @@ package com.asgard.user.entity.embeddedid;
 
 import lombok.Data;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
