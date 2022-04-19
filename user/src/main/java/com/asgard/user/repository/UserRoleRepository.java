@@ -22,7 +22,4 @@ public interface UserRoleRepository extends JpaRepository<User_Role, Integer> {
     @Query("FROM User_Role r " + "WHERE r.userRoleId.userID = :id")
     List<User_Role> getUserDetails(@Param("id") Integer id);
 
-//    @Query("FROM User_Role u WHERE u.userRoleID.userID =:userID AND u.userRoleID.roleID =:roleID")
-//    User_Role findByUserIDAndRole(@Param("userID") Integer userID, @Param("roleID") Integer roleID);
-
 }

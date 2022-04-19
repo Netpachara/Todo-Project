@@ -13,8 +13,6 @@ public class ResponseUserDetailsAndRole {
 
     private List<ResponseRole> responseRoleList;
 
-//    private Integer roleID;
-//    private String title;
 }
 
 

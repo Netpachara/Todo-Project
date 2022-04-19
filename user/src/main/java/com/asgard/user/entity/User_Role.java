@@ -42,15 +42,6 @@ public class User_Role {
     @JoinColumn(name="roleID", insertable = false, updatable = false)
     private Role role;
 
-
-
-//    @Id
-//    @Column(name = "userid")
-//    Integer userID;
-//
-//    @Id
-//    @Column(name = "roleid")
-//    Integer roleID;
 }
 
 

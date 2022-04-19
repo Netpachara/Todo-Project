@@ -45,16 +45,7 @@ public class UserService {
     }
 
     public List<User> findUserList(String search, Integer roleID){
-//        List<User> users = userRepository.findAll();
-//        for(User u : users){
-//            System.out.println(u.getUserID());
-//            System.out.println(u.getUser_role().toString());
-//            for(User_Role ur : u.getUser_role()){
-//                System.out.println(ur.getRole());
-//            }
-//        }
         List<User> responseUserDetailsAndRole = userRepository.getUserList(search.toLowerCase(), roleID);
-
         return responseUserDetailsAndRole;
 
     }
