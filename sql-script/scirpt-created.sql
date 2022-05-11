@@ -21,3 +21,9 @@ CREATE TABLE User_Role (
 
 INSERT INTO [Role](Title) VALUES('admin')
 INSERT INTO [Role](Title) VALUES('member')
+
+INSERT INTO [User] (FullName,Email,Password) VALUES ('Pachara','pachara@ascendcorp.com','987654321');
+INSERT INTO User_Role (UserID,RoleID) VALUES (1,1);
+INSERT INTO [User] (FullName,Email,Password) VALUES ('Suksamran','suksamran@ascendcorp.com','123456789');
+INSERT INTO User_Role (UserID,RoleID) VALUES (2,2);
+

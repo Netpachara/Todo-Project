@@ -5,6 +5,7 @@ import com.asgard.user.payload.request.CreateEditRequest;
 import com.asgard.user.payload.request.CreateLoginRequest;
 import com.asgard.user.payload.request.CreateUserRequest;
 import com.asgard.user.payload.request.CreateUserRequestID;
+import com.asgard.user.payload.request.RequestUserList;
 import com.asgard.user.payload.response.ResponseBase;
 import com.asgard.user.payload.response.ResponseUserDetailsAndRole;
 import com.asgard.user.payload.response.ResponseUserID;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,7 +37,7 @@ public class UserController {
         this.userService = u ;
     }
 
-    @PostMapping("/user/created")
+    @PostMapping("/api/user/created")
     public ResponseEntity<?> createdMember(@Valid @RequestBody CreateUserRequest userReq){
         ResponseBase responseBase = new ResponseBase();
         ResponseEntity<?> response = null;
@@ -55,7 +57,7 @@ public class UserController {
         return response;
     }
 
-    @GetMapping("/user/login")
+    @GetMapping("/api/user/login")
     public ResponseEntity userLogin(@Valid @RequestBody CreateLoginRequest userLogin){
         User user = userService.Login(userLogin.getEmail(), userLogin.getPassword());
         ResponseUserID responseUserID = new ResponseUserID();
@@ -64,53 +66,94 @@ public class UserController {
         return response;
     }
 
-    @GetMapping("/user/list")
-    public ResponseEntity getUserList(@Valid @Param("search") String search,@Valid @Param("roleID") Integer roleID){
-        List<User> user_role = userService.findUserList(search, roleID);
+    @GetMapping("/api/user/list")
+    public ResponseEntity getUserList(@Valid RequestUserList req) throws Exception {
+        ResponseBase responseBase = new ResponseBase();
+        ResponseEntity response = null ;
         List<ResponseUserList> res = new ArrayList<>();
-        for(User u : user_role){
-            ResponseUserList response = new ResponseUserList() ;
-            response.setUserID(u.getUserID());
-            response.setFullName(u.getFullName());
-            response.setEmail(u.getEmail());
-            response.setRoleID(userService.findRoleID(roleID).getRoleID());
-            response.setTitle(userService.findRoleID(roleID).getTitle());
-            res.add(response);
+        List<String> error = new ArrayList<>();
+        try{
+            List<ResponseUserList> user_role = userService.findUserList(req);
+
+            for(ResponseUserList u : user_role){
+                ResponseUserList rlt = new ResponseUserList() ;
+                rlt.setUserID(u.getUserID());
+                rlt.setFullName(u.getFullName());
+                rlt.setEmail(u.getEmail());
+//                rlt.setRoleID(userService.findRoleID(req.getRoleID()).getRoleID());
+                rlt.setRoleID(u.getRoleID());
+                rlt.setTitle(u.getTitle());
+                res.add(rlt);
+            }
+            responseBase.setData(res);
+            response = new ResponseEntity(responseBase,HttpStatus.OK);
         }
-        ResponseEntity response = new ResponseEntity(res,HttpStatus.OK);
+        catch (Exception e){
+            if(e.getMessage().equalsIgnoreCase("Not found from search")){
+                error.add(e.getMessage());
+                responseBase.setErrors(error);
+                response = new ResponseEntity(responseBase,HttpStatus.BAD_REQUEST);
+            }
+        }
         return response;
     }
 
-    @GetMapping("/user/details")
-    public ResponseEntity getUserDetails(@RequestBody CreateUserRequestID reqID){
-        ResponseUserDetailsAndRole user_role = userService.findUserDetails(reqID.getUserID());
-        ResponseEntity response = new ResponseEntity(user_role,HttpStatus.OK);
+    @GetMapping("/api/user/{id}/details")
+    public ResponseEntity getUserDetails(@PathVariable("id") Integer userID){
+        ResponseEntity response = null ;
+        ResponseBase responseBase = new ResponseBase();
+        List<String> error = new ArrayList<>();
+        try{
+            ResponseUserDetailsAndRole user_role = userService.findUserDetails(userID);
+//            responseBase.setData(user_role);
+            response = new ResponseEntity(user_role,HttpStatus.OK);
+        }
+        catch (Exception e){
+            error.add(e.getMessage());
+            responseBase.setErrors(error);
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBase);
+        }
         return response;
     }
 
 
-    @PutMapping("/user/edit")
+    @PutMapping("/api/user/edit")
     public ResponseEntity editUser(@Valid @RequestBody CreateEditRequest editRequest){
         ResponseEntity response = null;
+        ResponseBase responseBase = new ResponseBase();
+        List<String> error = new ArrayList<>();
         try{
             Integer userID = userService.editUserRole(editRequest);
             ResponseUserID responseUserID = new ResponseUserID();
             responseUserID.setUserID(userID);
-            response = new ResponseEntity(responseUserID,HttpStatus.OK);
+            responseBase.setData(responseUserID);
+            response = new ResponseEntity(responseBase,HttpStatus.OK);
         }
         catch (Exception e){
             if( e.getMessage().equalsIgnoreCase("Duplicated Email")){
-                response = new ResponseEntity(e.getMessage(),HttpStatus.OK);
+                error.add(e.getMessage());
+                responseBase.setErrors(error);
+                response = new ResponseEntity(responseBase,HttpStatus.BAD_REQUEST);
             }
         }
         return response;
     }
 
 
-    @DeleteMapping("/user")
+    @DeleteMapping("/api/user/delete")
     public ResponseEntity deleteUser(@RequestBody CreateUserRequestID reqID){
-        userService.deleteUser(reqID.getUserID());
-        ResponseEntity response = new ResponseEntity(HttpStatus.OK);
+        ResponseEntity response = null;
+        List<String> error = new ArrayList<>();
+        try{
+            userService.deleteUser(reqID.getUserID());
+            response = new ResponseEntity(HttpStatus.OK);
+        }
+        catch (Exception e){
+            if(e.getMessage().equalsIgnoreCase("Not found this user")){
+                error.add(e.getMessage());
+            }
+        }
+
         return response;
     }
 

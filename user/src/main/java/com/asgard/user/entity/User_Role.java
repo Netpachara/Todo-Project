@@ -23,6 +23,10 @@ public class User_Role {
     @JoinColumn(name="userID", insertable = false, updatable = false)
     private User user;
 
+    @ManyToOne()
+    @JoinColumn(name="roleID", insertable = false, updatable = false)
+    private Role role;
+
     public User_Role(){
 
     }
@@ -38,9 +42,7 @@ public class User_Role {
                 '}';
     }
 
-    @ManyToOne()
-    @JoinColumn(name="roleID", insertable = false, updatable = false)
-    private Role role;
+
 
 }
 

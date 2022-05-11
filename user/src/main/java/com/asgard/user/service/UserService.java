@@ -7,9 +7,12 @@ import com.asgard.user.entity.User_Role;
 import com.asgard.user.entity.embeddedid.UserRoleId;
 import com.asgard.user.payload.request.CreateEditRequest;
 import com.asgard.user.payload.request.CreateUserRequest;
+import com.asgard.user.payload.request.RequestUserList;
 import com.asgard.user.payload.response.ResponseRole;
 import com.asgard.user.payload.response.ResponseUserDetailsAndRole;
+import com.asgard.user.payload.response.ResponseUserList;
 import com.asgard.user.repository.RoleRepository;
+import com.asgard.user.repository.UserListRepository;
 import com.asgard.user.repository.UserRepository;
 import com.asgard.user.repository.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +28,14 @@ public class UserService {
     private UserRepository userRepository;
     private UserRoleRepository userRoleRepository;
     private RoleRepository roleRepository;
+    private UserListRepository userListRepository;
 
     @Autowired
-    public UserService(UserRepository u, UserRoleRepository ur, RoleRepository r){
+    public UserService(UserRepository u, UserRoleRepository ur, RoleRepository r, UserListRepository ul){
         this.userRepository = u;
         this.userRoleRepository = ur;
         this.roleRepository = r;
+        this.userListRepository = ul;
     }
 
     public boolean findDuplicateEmail(String email){
@@ -44,9 +49,12 @@ public class UserService {
         return userRepository.checkLogin(email, password);
     }
 
-    public List<User> findUserList(String search, Integer roleID){
-        List<User> responseUserDetailsAndRole = userRepository.getUserList(search.toLowerCase(), roleID);
-        return responseUserDetailsAndRole;
+    public List<ResponseUserList> findUserList(RequestUserList req) throws Exception {
+        List<ResponseUserList> res = userListRepository.getUserList(req);
+        if(res == null){
+            throw new Exception("Not found from search");
+        }
+        return res;
 
     }
 
@@ -55,9 +63,12 @@ public class UserService {
     }
 
 
-    public ResponseUserDetailsAndRole findUserDetails(Integer id){
+    public ResponseUserDetailsAndRole findUserDetails(Integer id) throws Exception {
         List<User_Role> user_role = userRoleRepository.getUserDetails(id);
         User find_user = userRepository.findByUserID(id);
+        if(find_user == null){
+            throw new Exception("This userId is not in database");
+        }
         List<Integer> roleIDList = new ArrayList<>();
         for(User_Role u : user_role){
             roleIDList.add(u.getUserRoleId().getRoleID());
@@ -117,7 +128,10 @@ public class UserService {
         return editRequest.getUserID();
     }
 
-    public void deleteUser(Integer id){
+    public void deleteUser(Integer id) throws Exception {
+        if(userRepository.findByUserID(id) == null){
+            throw new Exception("Not found this user");
+        }
         userRoleRepository.deleteByUserID(id);
         userRepository.deleteById(id);
     }
