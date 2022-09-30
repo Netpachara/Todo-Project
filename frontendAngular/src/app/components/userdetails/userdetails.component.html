@@ -1,0 +1,10 @@
+<p>userdetails works!</p>
+<div>
+    <h1>UserID: {{id}}</h1>
+    <h1>FullName: {{fullName}}</h1>
+    <h1>Email: {{email}}</h1>
+    <div *ngFor = "let role for responseRoleList">
+        Role: {{role.roleID}}
+    </div>
+
+</div>

@@ -1,0 +1,23 @@
+<p>userlist works!</p>
+<h1>UserList</h1>
+  <div class = "container">
+    <table border = "1" cellPadding={10}>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>FullName</th>
+          <th>Email</th>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of userList">
+          <td><a [routerLink]= "['/userdetails', item.userID]" class = "id-link"><span>{{item.userID}}</span></a></td>
+          <!-- <td><span>{{item.userID}}</span></td> -->
+          <td><span>{{item.fullName}}</span></td>
+          <td><span>{{item.email}}</span></td>
+          <td><span>{{item.title}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
