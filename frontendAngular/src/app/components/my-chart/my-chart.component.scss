@@ -1,0 +1,35 @@
+#divChart {
+    display: block;
+    width: 700px;
+    height: 400px;
+}
+
+.graphBox {
+    position: relative;
+    width: 700px;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 30px;
+    min-height: 200px;
+}
+
+.graphBox .box {
+    position: relative;
+    background: #fff;
+    padding: 20px;
+    width: 100%;
+    box-shadow: 0 7px 25px rgba(0,0,0,0.08);
+    border-radius: 20px;
+}
+
+.number {
+    text-align: center;
+}
+
+@media (max-width: 991px){
+    .graphBox{
+        grid-template-columns: 1fr;
+        // height: auto;
+    }
+}

@@ -1,0 +1,107 @@
+*{
+  box-sizing: border-box;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 14px;
+}
+
+.toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  background-color: #1976d2;
+  color: white;
+  color: #333;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  }
+
+  .toolbar img {
+    margin: 0 16px;
+    }
+    
+    .toolbar #twitter-logo {
+    height: 40px;
+    margin: 0 16px;
+    }
+    
+    .toolbar #twitter-logo:hover {
+    opacity: 0.8;
+    }
+
+    .content {
+      display: flex;
+      margin: 82px auto 32px;
+      padding: 0 16px;
+      max-width: 960px;
+      flex-direction: column;
+      align-items: left;
+      background-color: #1976d2;
+  }
+
+  
+  // .navigation{
+  //   position: fixed;
+  //   width: 300px;
+  //   height: 100%;
+  //   background-color: #333 ;
+  //   border-left: 10px solid #333;
+  //   text-align : left; 
+  //   transition: 0.5;
+  //   overflow: hidden;
+  // }
+
+  // .navigation ul {
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   width: 100;
+  // }
+
+  // .navigation ul li {
+  //   position: relative;
+  //   width: 200%;
+  //   list-style: none;
+  // }
+
+  .navigation ul li:hover{
+    background-color: white;
+  }
+
+  // .navigation ul li:nth-child(1) {
+  //   margin-bottom: 40px;
+  //   pointer-events: none;
+  // }
+
+  .navigation ul li a{
+    position: relative;
+    display: block;
+    width: 100%;
+    display: flex;
+    text-decoration: none;
+    color: white;
+  }
+
+  .navigation ul li:hover a{
+    color: #1976d2;
+  }
+
+  .navigation ul li a .title {
+    position: relative;
+    display: block;
+    padding: 0 10px;
+    // height: 60px;
+    line-height: 60px;
+    text-align: start;
+    white-space: nowrap;
+    font-size: large;
+  }
+
+
+  
+
+

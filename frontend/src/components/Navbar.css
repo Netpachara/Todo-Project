@@ -1,0 +1,38 @@
+.navbar-logo {
+    margin-left: 20px;
+    text-decoration: none;
+    color: wheat;
+}
+
+.menu-icon {
+    align-items: right;
+    margin-left: 10px;
+}
+
+.navbar {
+    width: 100%;
+    display: flex;
+    flex-wrap: inherit;
+    justify-content: space-between ;
+    color: white;
+    align-items: center;
+    text-decoration: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.navlink {
+    display: flex;
+    justify-content: space-evenly;
+    word-spacing: 10px;
+}
+
+.nav-links {
+    color: wheat;
+    text-decoration: none;
+    font-size: large;
+}
+
+.active {
+    color: white;
+}
