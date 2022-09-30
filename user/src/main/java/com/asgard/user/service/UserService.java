@@ -6,11 +6,13 @@ import com.asgard.user.entity.User;
 import com.asgard.user.entity.User_Role;
 import com.asgard.user.entity.embeddedid.UserRoleId;
 import com.asgard.user.payload.request.CreateEditRequest;
+import com.asgard.user.payload.request.CreateLoginRequest;
 import com.asgard.user.payload.request.CreateUserRequest;
 import com.asgard.user.payload.request.RequestUserList;
 import com.asgard.user.payload.response.ResponseRole;
 import com.asgard.user.payload.response.ResponseUserDetailsAndRole;
 import com.asgard.user.payload.response.ResponseUserList;
+import com.asgard.user.payload.response.ResponseUserRoleList;
 import com.asgard.user.repository.RoleRepository;
 import com.asgard.user.repository.UserListRepository;
 import com.asgard.user.repository.UserRepository;
@@ -45,14 +47,47 @@ public class UserService {
         return false;
     }
 
-    public User Login(String email, String password){
-        return userRepository.checkLogin(email, password);
+    public Integer Login(CreateLoginRequest req){
+        User user = userRepository.checkLogin(req.getEmail(), req.getPassword());
+        return user.getUserID();
     }
 
-    public List<ResponseUserList> findUserList(RequestUserList req) throws Exception {
-        List<ResponseUserList> res = userListRepository.getUserList(req);
-        if(res == null){
+    public List<ResponseUserRoleList> findUserList(RequestUserList req) throws Exception {
+        List<ResponseUserList> user_role = userListRepository.getUserList(req);
+        if(user_role == null){
             throw new Exception("Not found from search");
+        }
+        List<ResponseUserRoleList> res = new ArrayList<>();
+        String setRole = "";
+        Integer i = 0;
+        for(ResponseUserList u : user_role){
+            ResponseUserRoleList rlt = new ResponseUserRoleList() ;
+            if(i > 0){  // another person
+                if(res.get(i-1).getUserID() == u.getUserRoleId().getUserID()){ // if this user and lasted user are same userID
+                    setRole += ", " + u.getTitle(); // add role
+                    res.get(i-1).setTitle(setRole);
+                }
+                else{ // else add this new userID
+                    rlt.setUserID(u.getUserRoleId().getUserID());
+                    rlt.setFullName(u.getFullName());
+                    rlt.setEmail(u.getEmail());
+                    rlt.setTitle(u.getTitle());
+                    setRole = "" ;
+                    setRole += u.getTitle() ;
+                    res.add(rlt);
+                    i++;
+                }
+            }
+            else{  //set first person into list
+                rlt.setUserID(u.getUserRoleId().getUserID());
+                rlt.setFullName(u.getFullName());
+                rlt.setEmail(u.getEmail());
+                rlt.setTitle(u.getTitle());
+                setRole += u.getTitle() ;
+                res.add(rlt);
+                i++;
+            }
+
         }
         return res;
 
@@ -65,6 +100,9 @@ public class UserService {
 
     public ResponseUserDetailsAndRole findUserDetails(Integer id) throws Exception {
         List<User_Role> user_role = userRoleRepository.getUserDetails(id);
+        if(user_role == null){
+            throw new Exception("Not found user with role");
+        }
         User find_user = userRepository.findByUserID(id);
         if(find_user == null){
             throw new Exception("This userId is not in database");
@@ -74,6 +112,9 @@ public class UserService {
             roleIDList.add(u.getUserRoleId().getRoleID());
         }
         List<Role> find_role = roleRepository.findRole(roleIDList);
+        if(find_role.size() == 0){
+            throw new Exception("Role not found");
+        }
         ResponseUserDetailsAndRole res = new ResponseUserDetailsAndRole();
         List<ResponseRole> responseRoleList = new ArrayList<>();
         for(Role r: find_role){
@@ -89,7 +130,7 @@ public class UserService {
         return res;
     }
 
-    public User createdUser(CreateUserRequest userDetails){
+    public User createUser(CreateUserRequest userDetails){
         User user = new User();
         user.setEmail(userDetails.getEmail());
         user.setFullName(userDetails.getFullName());
@@ -112,6 +153,9 @@ public class UserService {
         }
 
         User user = userRepository.findByUserID(editRequest.getUserID());
+        if(user == null){
+            throw new Exception("Not found user");
+        }
         user.setFullName(editRequest.getFullName());
         user.setEmail(editRequest.getEmail());
         userRepository.save(user);
@@ -128,12 +172,13 @@ public class UserService {
         return editRequest.getUserID();
     }
 
-    public void deleteUser(Integer id) throws Exception {
+    public Integer deleteUser(Integer id) throws Exception {
         if(userRepository.findByUserID(id) == null){
             throw new Exception("Not found this user");
         }
         userRoleRepository.deleteByUserID(id);
         userRepository.deleteById(id);
+        return id ;
     }
 
 }
