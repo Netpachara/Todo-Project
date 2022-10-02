@@ -1,0 +1,10 @@
+dependency-injector==4.37.0
+fastapi==0.71.0
+uvicorn==0.16.0
+requests==2.27.1
+pandas==1.0.5
+config-client==0.7.2
+pymssql==2.1.5
+google-cloud-bigquery==1.27.2
+pandas-gbq==0.13.2
+boto3==1.14.63
